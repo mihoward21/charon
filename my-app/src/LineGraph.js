@@ -249,6 +249,8 @@ class LineGraph extends React.Component {
                 <p className="data-source-text">
                     <span>Data source: </span>
                     <a href={WEEKLY_DEATHS_BY_AGE_URL}>{WEEKLY_DEATHS_BY_AGE_URL}</a>
+                    <br />
+                    <span>Note: CDC counts of death certificates can lag by up to three months.</span>
                 </p>
             </>
         )
