@@ -2,3 +2,4 @@
 *.pyc
 
 tokens.py
+my-app/src/tokens.js
