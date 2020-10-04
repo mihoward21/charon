@@ -177,7 +177,8 @@ class LineGraph extends React.Component {
                 scales: {
                     yAxes: [{
                         ticks: {
-                            beginAtZero: true
+                            beginAtZero: true,
+                            suggestedMax: 25000,
                         }
                     }]
                 }
