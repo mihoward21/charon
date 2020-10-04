@@ -19,7 +19,7 @@ class DropdownButton extends React.Component {
 
     render() {
         return (
-            <select
+            <select className={this.props.className}
                 value={this.state.selectValue}
                 onChange={this.onChange}>
                 {this.props.selectOptions.map((option, index) => (

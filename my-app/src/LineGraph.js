@@ -13,6 +13,7 @@ const REQUEST_DATA_HEADERS = {
 }
 
 const WEEKLY_DEATHS_BY_AGE_URL = 'https://data.cdc.gov/resource/y5bj-9g5w.json' // 2015-2020
+const CURRENT_YEAR = new Date().getFullYear();
 
 const colors = [
     'rgba(30,144,255,1)', // blue
@@ -40,6 +41,10 @@ class LineGraph extends React.Component {
     constructor(props) {
         super(props);
         this.onAgeGroupSelect = this.onAgeGroupSelect.bind(this);
+    }
+
+    getChartTitle(ageGroup) {
+        return `US weekly deaths for ${ageGroup}: 2015 - ${CURRENT_YEAR}`
     }
 
     async dataFetchHelper({ datasetUrl, limit = null}) {
@@ -176,11 +181,24 @@ class LineGraph extends React.Component {
                 maintainAspectRatio: false,
                 scales: {
                     yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Number of Deaths',
+                            fontSize: 18,
+                        },
                         ticks: {
                             beginAtZero: true,
                             suggestedMax: 25000,
                         }
                     }]
+                },
+                title: {
+                    display: true,
+                    text: this.getChartTitle(AGE_GROUPS[0]),
+                    fontSize: 32,
+                },
+                legend: {
+                    position: 'right',
                 }
             }
         });
@@ -198,6 +216,7 @@ class LineGraph extends React.Component {
             dataset['fill'] = false;
         });
         this.chartObj.data.datasets = datasets;
+        this.chartObj.options.title.text = this.getChartTitle(ageGroup);
         this.chartObj.update();
     }
 
@@ -223,10 +242,14 @@ class LineGraph extends React.Component {
                         id="myChart"
                         ref={this.chartRef} />
                 </div>
-                <DropdownButton
+                <DropdownButton className="age-group-button"
                     onChange={this.onAgeGroupSelect}
                     defaultValue={AGE_GROUPS[0]}
                     selectOptions={AGE_GROUPS} />
+                <p className="data-source-text">
+                    <span>Data source: </span>
+                    <a href={WEEKLY_DEATHS_BY_AGE_URL}>{WEEKLY_DEATHS_BY_AGE_URL}</a>
+                </p>
             </>
         )
     }

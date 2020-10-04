@@ -1,5 +1,17 @@
 .chart-container {
     position: relative;
-    height: 450px;
-    width: 800px;
+    height: 500px;
+    width: 1000px;
+}
+
+.age-group-button {
+    margin-top: 20px;
+}
+
+.data-source-text {
+    margin-top: 50px;
+    font-size: 14px;
+}
+.data-source-text > span {
+    color: #000000;
 }
