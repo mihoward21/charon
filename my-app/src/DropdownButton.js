@@ -19,13 +19,16 @@ class DropdownButton extends React.Component {
 
     render() {
         return (
-            <select className={this.props.className}
-                value={this.state.selectValue}
-                onChange={this.onChange}>
-                {this.props.selectOptions.map((option, index) => (
-                    <option value={option} key={index}>{option}</option>
-                ))}
-            </select>
+            <div className={this.props.className}>
+                { this.props.labelText && <label style={{marginRight: '5px'}}>{this.props.labelText}</label> }
+                <select
+                    value={this.state.selectValue}
+                    onChange={this.onChange}>
+                    {this.props.selectOptions.map((option, index) => (
+                        <option value={option} key={index}>{option}</option>
+                    ))}
+                </select>
+            </div>
         );
     }
 }

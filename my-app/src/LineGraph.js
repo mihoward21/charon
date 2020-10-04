@@ -243,6 +243,7 @@ class LineGraph extends React.Component {
                         ref={this.chartRef} />
                 </div>
                 <DropdownButton className="age-group-button"
+                    labelText='Age group:'
                     onChange={this.onAgeGroupSelect}
                     defaultValue={AGE_GROUPS[0]}
                     selectOptions={AGE_GROUPS} />
