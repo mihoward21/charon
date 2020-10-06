@@ -6,6 +6,8 @@ import "./LineGraph.css";
 
 import DropdownButton from './DropdownButton';
 
+import { logEvent } from './logger';
+
 
 const WEEKLY_DEATHS_BY_AGE_URL = 'https://data.cdc.gov/resource/y5bj-9g5w.json' // 2015-2020
 const CURRENT_YEAR = new Date().getFullYear();
@@ -203,6 +205,9 @@ class LineGraph extends React.Component {
     }
 
     onAgeGroupSelect(newAgeGroup) {
+        logEvent('select: age group', {
+            ageGroup: newAgeGroup
+        });
         this.updateChart({
             ageGroup: newAgeGroup,
         });
