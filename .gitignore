@@ -3,3 +3,5 @@
 
 tokens.py
 my-app/src/tokens.js
+
+*.data.json

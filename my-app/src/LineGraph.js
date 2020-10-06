@@ -4,13 +4,8 @@ import React from 'react';
 import Chart from "chart.js";
 import "./LineGraph.css";
 
-import { APP_TOKEN } from './tokens';
 import DropdownButton from './DropdownButton';
 
-const REQUEST_DATA_LIMIT = 50000;
-const REQUEST_DATA_HEADERS = {
-    'X-App-Token': APP_TOKEN,
-}
 
 const WEEKLY_DEATHS_BY_AGE_URL = 'https://data.cdc.gov/resource/y5bj-9g5w.json' // 2015-2020
 const CURRENT_YEAR = new Date().getFullYear();
@@ -48,29 +43,8 @@ class LineGraph extends React.Component {
     }
 
     async dataFetchHelper({ datasetUrl, limit = null}) {
-        const urlParams = {
-            "$limit": limit === null ? REQUEST_DATA_LIMIT : limit,
-            "$offset": 0,
-        };
-        let result = [];
-        while (true) {
-            let requestUrl = datasetUrl;
-            if (urlParams && Object.keys(urlParams).length > 0) {
-                requestUrl += '?' + new URLSearchParams(urlParams).toString();
-            }
-
-            const response = await axios.get(requestUrl, {
-                headers: REQUEST_DATA_HEADERS,
-            });
-
-            result = result.concat(response.data);
-            if (response.data.length < urlParams["$limit"]) {
-                break
-            }
-            urlParams["$offset"] += urlParams["$limit"]
-        }
-
-        return result
+        const response = await axios.get('/100420.data.json');
+        return response.data;
     }
 
     shouldIgnoreData(dataPoint, location, ageGroup) {
