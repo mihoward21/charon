@@ -17,3 +17,6 @@ export const AGE_GROUPS = [
     '75-84 years',
     '85 years and older'
 ];
+
+// Array of the form: [1, 2, ..., 51, 52]
+export const WEEK_NUMS = Array.from({length: 52}, (_, i) => i + 1)

@@ -5,20 +5,23 @@ import Chart from "chart.js";
 
 import "components/LineGraph.css";
 import DropdownButton from 'components/DropdownButton';
+import ChartTable from 'components/ChartTable';
 
-import { WEEKLY_DEATHS_BY_AGE_URL, COLORS, AGE_GROUPS } from 'utils/constants';
+import { WEEKLY_DEATHS_BY_AGE_URL, COLORS, AGE_GROUPS, WEEK_NUMS } from 'utils/constants';
 import { getFilteredDataObj, getFormattedDatasets } from 'utils/datasets';
 import { logEvent } from 'utils/logger';
 
 
 class LineGraph extends React.Component {
     chartRef = React.createRef();
-    chartObj = null;
     dataPointList = null;
 
     constructor(props) {
         super(props);
         this.onAgeGroupSelect = this.onAgeGroupSelect.bind(this);
+        this.state = {
+            chartObj: null,
+        }
     }
 
     getChartTitle(ageGroup) {
@@ -44,42 +47,44 @@ class LineGraph extends React.Component {
 
         const getWeekLabels = () => {
             const labels = [];
-            for (let weekNum = 1; weekNum < 53; weekNum++) {
+            for (const weekNum of WEEK_NUMS) {
                 labels.push('Week ' + weekNum);
             }
             return labels;
         }
 
-        this.chartObj = new Chart(myChartRef, {
-            type: "line",
-            data: {
-                labels: getWeekLabels(),
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    yAxes: [{
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'Number of Deaths',
-                            fontSize: 18,
-                        },
-                        ticks: {
-                            beginAtZero: true,
-                            suggestedMax: 25000,
-                        }
-                    }]
+        this.setState({
+            chartObj: new Chart(myChartRef, {
+                type: "line",
+                data: {
+                    labels: getWeekLabels(),
                 },
-                title: {
-                    display: true,
-                    text: this.getChartTitle(AGE_GROUPS[0]),
-                    fontSize: 32,
-                },
-                legend: {
-                    position: 'right',
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        yAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Number of Deaths',
+                                fontSize: 18,
+                            },
+                            ticks: {
+                                beginAtZero: true,
+                                suggestedMax: 25000,
+                            }
+                        }]
+                    },
+                    title: {
+                        display: true,
+                        text: this.getChartTitle(AGE_GROUPS[0]),
+                        fontSize: 32,
+                    },
+                    legend: {
+                        position: 'right',
+                    }
                 }
-            }
+            })
         });
     }
 
@@ -89,9 +94,12 @@ class LineGraph extends React.Component {
             ageGroup,
         });
 
-        this.chartObj.data.datasets = chartDatasets;
-        this.chartObj.options.title.text = this.getChartTitle(ageGroup);
-        this.chartObj.update();
+        this.state.chartObj.data.datasets = chartDatasets;
+        this.state.chartObj.options.title.text = this.getChartTitle(ageGroup);
+        this.state.chartObj.update();
+        this.setState({
+            chartObj: this.state.chartObj,
+        })
     }
 
     async componentDidMount() {
@@ -124,6 +132,9 @@ class LineGraph extends React.Component {
                     onChange={this.onAgeGroupSelect}
                     defaultValue={AGE_GROUPS[0]}
                     selectOptions={AGE_GROUPS} />
+                <div className="table-container">
+                    <ChartTable datasets={this.state.chartObj?.data?.datasets}/>
+                </div>
                 <p className="data-source-text">
                     <span>Data source: </span>
                     <a href={WEEKLY_DEATHS_BY_AGE_URL}>{WEEKLY_DEATHS_BY_AGE_URL}</a>
