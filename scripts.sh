@@ -1,11 +1,11 @@
 function build_production_code {
-    cd my-app
+    cd webapp
     npm run build
     cd ..
 }
 
 function deploy_built_code {
-    cd my-app/build/
+    cd webapp/build/
     aws s3 sync . s3://charonapp.com --delete --exclude "*.data.json"
     cd ../..
 }
@@ -24,7 +24,7 @@ function start_server {
 }
 
 function start_webapp {
-    cd my-app
+    cd webapp
     npm run start
 }
 
