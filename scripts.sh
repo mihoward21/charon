@@ -19,6 +19,14 @@ function deploy_json_file {
     aws s3 sync . s3://charonapp.com --delete --exclude "*" --include "*.data.json"
 }
 
+function start_server {
+    python -m SimpleHTTPServer 3001
+}
+
+function start_webapp {
+    cd my-app
+    npm run start
+}
 
 # Check if the function exists (bash specific)
 if declare -f "$1" > /dev/null
