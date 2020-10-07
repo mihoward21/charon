@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { withStyles } from '@material-ui/core/styles';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
 
 import { WEEK_NUMS } from 'utils/constants';
@@ -28,12 +29,12 @@ class ChartTable extends React.Component {
                 <TableBody>
                     { this.props.datasets.map((dataset, datasetIndex) => {
                         return (
-                            <TableRow key={datasetIndex}>
+                            <StyledTableRow key={datasetIndex}>
                                 <TableCell>{dataset.label}</TableCell>
-                                { dataset.data.map((numDeaths, dataIndex) => {
-                                    return <TableCell key={dataIndex}>{numDeaths}</TableCell>
+                                { dataset.data.map((dataPoint, dataIndex) => {
+                                    return <TableCell key={dataIndex}>{ dataPoint }</TableCell>
                                 })}
-                            </TableRow>
+                            </StyledTableRow>
                         )
                     })}
                 </TableBody>
@@ -41,5 +42,13 @@ class ChartTable extends React.Component {
         );
     }
 }
+
+const StyledTableRow = withStyles((theme) => ({
+  root: {
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.action.hover,
+    },
+  },
+}))(TableRow);
 
 export default ChartTable;
