@@ -1,7 +1,7 @@
 .idea/
 *.pyc
 
-tokens.py
-my-app/src/tokens.js
+*tokens.py
+*tokens.js
 
 *.data.json
