@@ -2,11 +2,11 @@ import axios from 'axios';
 
 import React from 'react';
 import Chart from "chart.js";
-import "./LineGraph.css";
 
-import DropdownButton from './DropdownButton';
+import "components/LineGraph.css";
+import DropdownButton from 'components/DropdownButton';
 
-import { logEvent } from './logger';
+import { logEvent } from 'utils/logger';
 
 
 const WEEKLY_DEATHS_BY_AGE_URL = 'https://data.cdc.gov/resource/y5bj-9g5w.json' // 2015-2020
