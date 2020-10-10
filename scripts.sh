@@ -6,7 +6,8 @@ function build_production_code {
 
 function deploy_built_code {
     cd webapp/build/
-    aws s3 sync . s3://charonapp.com --delete --exclude "*.data.json"
+    aws s3 cp index.html s3://charonapp.com/index.html --cache-control no-store
+    aws s3 sync . s3://charonapp.com --delete --exclude "*.data.json" --exclude "index.html"
     cd ../..
 }
 
