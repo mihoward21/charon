@@ -7,7 +7,7 @@ import "components/LineGraph.css";
 import DropdownButton from 'components/DropdownButton';
 import ChartTable from 'components/ChartTable';
 
-import { WEEKLY_DEATHS_BY_AGE_URL, COLORS, AGE_GROUPS, WEEK_NUMS } from 'utils/constants';
+import { WEEKLY_DEATHS_BY_AGE_URL, AGE_GROUPS, WEEK_NUMS } from 'utils/constants';
 import { getFilteredDataObj, getFormattedDatasets } from 'utils/datasets';
 import { logEvent } from 'utils/logger';
 
@@ -139,7 +139,7 @@ class LineGraph extends React.Component {
                     <span>Data source: </span>
                     <a href={WEEKLY_DEATHS_BY_AGE_URL}>{WEEKLY_DEATHS_BY_AGE_URL}</a>
                     <br />
-                    <span>Note: CDC counts of death certificates can lag by up to twelve weeks.</span>
+                    <span>Note: CDC counts of death certificates can lag by a few months.</span>
                 </p>
             </>
         )

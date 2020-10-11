@@ -22,6 +22,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <LineGraph />
+        <p className="support-text">Questions? Email <a href="mailto:support@charonapp.com">support@charonapp.com</a></p>
       </header>
     </div>
   );

@@ -1,16 +1,12 @@
 import React from 'react';
 
 import { withStyles } from '@material-ui/core/styles';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
+import { Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 
 import { WEEK_NUMS } from 'utils/constants';
 
 
 class ChartTable extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         if (this.props.datasets === null || this.props.datasets === undefined) {
             return null;
