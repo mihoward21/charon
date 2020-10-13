@@ -38,7 +38,7 @@ class LineGraph extends React.Component {
     }
 
     async initData() {
-        const response = await axios.get('/100420.data.json');
+        const response = await axios.get('/101220.data.json');
         this.dataPointList = response.data;
     }
 

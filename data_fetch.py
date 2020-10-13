@@ -63,6 +63,29 @@ def fetch_data(dataset_url, limit=None):
     return result
 
 
+def get_filtered_data(data, state=None, age_group=None):
+    location = 'United States' if state is None else state
+
+    filtered_data = []
+    for data_point in data:
+        if data_point.get('type') != 'Unweighted':
+            # Ignore predicted data
+            continue
+
+        if data_point.get('jurisdiction').lower() != location.lower():
+            # Ignore data outside of the location we care about
+            continue
+
+        if age_group is not None:
+            if data_point.get('age_group') != age_group:
+                # Ignore data from age groups we don't care about
+                continue
+
+        filtered_data.append(data_point)
+
+    return filtered_data
+
+
 def get_deaths_by_year_by_age(data, state=None, max_week=None, desired_age_group=None):
     deaths_by_year_by_age = {}
     all_data_points = []
@@ -111,3 +134,14 @@ def get_deaths_by_year_by_age(data, state=None, max_week=None, desired_age_group
         all_data_points.append(data_point)
 
     return deaths_by_year_by_age, all_data_points
+
+
+def main():
+    full_data = fetch_data(DatasetUrls.WEEKLY_DEATHS_BY_AGE)
+    filtered_data = get_filtered_data(full_data)
+    with open('data.json', 'w+') as outfile:
+        json.dump(filtered_data, outfile)
+
+
+if __name__ == "__main__":
+    main()
