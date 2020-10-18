@@ -29,7 +29,7 @@ class LineGraph extends React.Component {
 
     getChartTitle() {
         const currentYear = new Date().getFullYear();
-        return `${this.location} weekly deaths for ${this.ageGroup}: 2015 - ${currentYear}`
+        return `${this.location} weekly deaths for ${this.ageGroup.label}: 2015 - ${currentYear}`
     }
 
     async getChartDatasets() {
@@ -107,7 +107,7 @@ class LineGraph extends React.Component {
 
     async onAgeGroupSelect(newAgeGroup) {
         logEvent('select: age group', {
-            ageGroup: newAgeGroup
+            ageGroup: newAgeGroup.label
         });
         this.ageGroup = newAgeGroup;
         await this.updateChart();

@@ -10,12 +10,34 @@ export const COLORS = [
 ];
 
 export const AGE_GROUPS = [
-    'Under 25 years',
-    '25-44 years',
-    '45-64 years',
-    '65-74 years',
-    '75-84 years',
-    '85 years and older'
+    {
+        'label': 'All ages',
+        'value': '',
+    },
+    {
+        'label': 'Under 25 years',
+        'value': 'Under 25 years',
+    },
+    {
+        'label': '25-44 years',
+        'value': '25-44 years',
+    },
+    {
+        'label': '45-64 years',
+        'value': '45-64 years',
+    },
+    {
+        'label': '65-74 years',
+        'value': '65-74 years',
+    },
+    {
+        'label': '75-84 years',
+        'value': '75-84 years',
+    },
+    {
+        'label': '85 years and older',
+        'value': '85 years and older',
+    }
 ];
 
 export const LOCATIONS = [
