@@ -7,39 +7,39 @@ import "components/LineGraph.css";
 import DropdownButton from 'components/DropdownButton';
 import ChartTable from 'components/ChartTable';
 
-import { WEEKLY_DEATHS_BY_AGE_URL, AGE_GROUPS, WEEK_NUMS } from 'utils/constants';
-import { getFilteredDataObj, getFormattedDatasets } from 'utils/datasets';
+import { AGE_GROUPS, LOCATIONS, WEEKLY_DEATHS_BY_AGE_URL, WEEK_NUMS } from 'utils/constants';
+import { getFormattedDatasets } from 'utils/datasets';
 import { logEvent } from 'utils/logger';
 
 
 class LineGraph extends React.Component {
     chartRef = React.createRef();
     dataPointList = null;
+    ageGroup = AGE_GROUPS[0];
+    location = LOCATIONS[0];
 
     constructor(props) {
         super(props);
         this.onAgeGroupSelect = this.onAgeGroupSelect.bind(this);
+        this.onLocationSelect = this.onLocationSelect.bind(this);
         this.state = {
             chartObj: null,
         }
     }
 
-    getChartTitle(ageGroup) {
+    getChartTitle() {
         const currentYear = new Date().getFullYear();
-        return `US weekly deaths for ${ageGroup}: 2015 - ${currentYear}`
+        return `${this.location} weekly deaths for ${this.ageGroup}: 2015 - ${currentYear}`
     }
 
-    getChartDatasets({dataPointList, ageGroup, state = null}) {
-        const location = state === null ? 'United States' : state;
-
-        // Filter the data so only what we want to chart is left
-        const dataObj = getFilteredDataObj(dataPointList, location, ageGroup);
+    async getChartDatasets() {
+        let datasetUrl = `/api/data/${encodeURIComponent(this.location)}`
+        if (this.ageGroup) {
+            datasetUrl += `/${encodeURIComponent(this.ageGroup)}`
+        }
+        const response = await axios.get(datasetUrl);
+        const dataObj = response.data;
         return getFormattedDatasets(dataObj);
-    }
-
-    async initData() {
-        const response = await axios.get('/101220.data.json');
-        this.dataPointList = response.data;
     }
 
     initChart() {
@@ -71,13 +71,12 @@ class LineGraph extends React.Component {
                             },
                             ticks: {
                                 beginAtZero: true,
-                                suggestedMax: 25000,
                             }
                         }]
                     },
                     title: {
                         display: true,
-                        text: this.getChartTitle(AGE_GROUPS[0]),
+                        text: this.getChartTitle(),
                         fontSize: 32,
                     },
                     legend: {
@@ -88,14 +87,11 @@ class LineGraph extends React.Component {
         });
     }
 
-    updateChart({ ageGroup }) {
-        const chartDatasets = this.getChartDatasets({
-            dataPointList: this.dataPointList,
-            ageGroup,
-        });
+    async updateChart() {
+        const chartDatasets = await this.getChartDatasets();
 
         this.state.chartObj.data.datasets = chartDatasets;
-        this.state.chartObj.options.title.text = this.getChartTitle(ageGroup);
+        this.state.chartObj.options.title.text = this.getChartTitle();
         this.state.chartObj.update();
         this.setState({
             chartObj: this.state.chartObj,
@@ -104,38 +100,51 @@ class LineGraph extends React.Component {
 
     async componentDidMount() {
         this.initChart();
-        await this.initData();
-        this.updateChart({
-            ageGroup: AGE_GROUPS[0],
-        });
+        this.ageGroup = AGE_GROUPS[0];
+        this.location = LOCATIONS[0];
+        await this.updateChart();
     }
 
-    onAgeGroupSelect(newAgeGroup) {
+    async onAgeGroupSelect(newAgeGroup) {
         logEvent('select: age group', {
             ageGroup: newAgeGroup
         });
-        this.updateChart({
-            ageGroup: newAgeGroup,
+        this.ageGroup = newAgeGroup;
+        await this.updateChart();
+    }
+
+    async onLocationSelect(newLocation) {
+        logEvent('select: location', {
+            location: newLocation
         });
+        this.location = newLocation;
+        await this.updateChart();
     }
 
     render() {
         return (
             <>
-                <div className="chart-container">
+                <div className='chart-container'>
                     <canvas
-                        id="myChart"
+                        id='myChart'
                         ref={this.chartRef} />
                 </div>
-                <DropdownButton className="age-group-button"
-                    labelText='Age group:'
-                    onChange={this.onAgeGroupSelect}
-                    defaultValue={AGE_GROUPS[0]}
-                    selectOptions={AGE_GROUPS} />
-                <div className="table-container">
+                <div className='chart-controls'>
+                    <DropdownButton className='age-group-button'
+                        labelText='Age group:'
+                        onChange={this.onAgeGroupSelect}
+                        defaultValue={AGE_GROUPS[0]}
+                        selectOptions={AGE_GROUPS} />
+                    <DropdownButton className='location-button'
+                        labelText='Region:'
+                        onChange={this.onLocationSelect}
+                        defaultValue={LOCATIONS[0]}
+                        selectOptions={LOCATIONS} />
+                </div>
+                <div className='table-container'>
                     <ChartTable datasets={this.state.chartObj?.data?.datasets}/>
                 </div>
-                <p className="data-source-text">
+                <p className='data-source-text'>
                     <span>Data source: </span>
                     <a href={WEEKLY_DEATHS_BY_AGE_URL}>{WEEKLY_DEATHS_BY_AGE_URL}</a>
                     <br />

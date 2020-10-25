@@ -15,7 +15,16 @@
 }
 
 .age-group-button {
+    display: inline-block;
     margin-top: 20px;
+    color: #000000;
+    font-size: 14px;
+}
+
+.location-button {
+    display: inline-block;
+    margin-top: 20px;
+    margin-left: 20px;
     color: #000000;
     font-size: 14px;
 }
