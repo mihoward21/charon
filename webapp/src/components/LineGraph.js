@@ -11,6 +11,8 @@ import { AGE_GROUPS, LOCATIONS, WEEKLY_DEATHS_BY_AGE_URL, WEEK_NUMS } from 'util
 import { getFormattedDatasets } from 'utils/datasets';
 import { logEvent } from 'utils/logger';
 
+const DATA_VERSION = '101220';
+
 
 class LineGraph extends React.Component {
     chartRef = React.createRef();
@@ -29,14 +31,15 @@ class LineGraph extends React.Component {
 
     getChartTitle() {
         const currentYear = new Date().getFullYear();
-        return `${this.location} weekly deaths for ${this.ageGroup}: 2015 - ${currentYear}`
+        return `${this.location.label} weekly deaths for ${this.ageGroup.label}: 2015 - ${currentYear}`
     }
 
     async getChartDatasets() {
-        let datasetUrl = `/api/data/${encodeURIComponent(this.location)}`
+        let datasetUrl = `/api/data/${encodeURIComponent(this.location.value)}`
         if (this.ageGroup) {
-            datasetUrl += `/${encodeURIComponent(this.ageGroup)}`
+            datasetUrl += `/${encodeURIComponent(this.ageGroup.value)}`
         }
+        datasetUrl += `?data_version=${DATA_VERSION}`;
         const response = await axios.get(datasetUrl);
         const dataObj = response.data;
         return getFormattedDatasets(dataObj);
@@ -107,7 +110,7 @@ class LineGraph extends React.Component {
 
     async onAgeGroupSelect(newAgeGroup) {
         logEvent('select: age group', {
-            ageGroup: newAgeGroup
+            ageGroup: newAgeGroup.label
         });
         this.ageGroup = newAgeGroup;
         await this.updateChart();
@@ -115,7 +118,7 @@ class LineGraph extends React.Component {
 
     async onLocationSelect(newLocation) {
         logEvent('select: location', {
-            location: newLocation
+            location: newLocation.label
         });
         this.location = newLocation;
         await this.updateChart();

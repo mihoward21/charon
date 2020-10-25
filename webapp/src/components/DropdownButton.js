@@ -10,10 +10,21 @@ class DropdownButton extends React.Component {
         };
     }
 
+    getOptionFromValue(optionValue) {
+        for (const selectOption of this.props.selectOptions) {
+            if (selectOption.value === optionValue) {
+                return selectOption;
+            }
+        }
+
+        return null;
+    }
+
     onChange(e) {
-        this.props.onChange(e.target.value);
+        const selectOption = this.getOptionFromValue(e.target.value);
+        this.props.onChange(selectOption);
         this.setState({
-            selectValue: e.target.value,
+            selectValue: selectOption,
         });
     }
 
@@ -22,10 +33,10 @@ class DropdownButton extends React.Component {
             <div className={this.props.className}>
                 { this.props.labelText && <label style={{marginRight: '5px'}}>{this.props.labelText}</label> }
                 <select
-                    value={this.state.selectValue}
+                    value={this.state.selectValue.value}
                     onChange={this.onChange}>
                     {this.props.selectOptions.map((option, index) => (
-                        <option value={option} key={index}>{option}</option>
+                        <option value={option.value} key={index}>{option.label}</option>
                     ))}
                 </select>
             </div>
