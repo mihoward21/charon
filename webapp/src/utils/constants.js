@@ -40,7 +40,7 @@ export const AGE_GROUPS = [
     }
 ];
 
-export const LOCATIONS = [
+const locationList = [
     'United States',
     'Alabama',
     'Alaska',
@@ -93,6 +93,13 @@ export const LOCATIONS = [
     'Wisconsin',
     'Wyoming'
 ];
+
+export const LOCATIONS = locationList.map((location) => {
+    return {
+        'label': location,
+        'value': location,
+    }
+});
 
 // Array of the form: [1, 2, ..., 51, 52]
 export const WEEK_NUMS = Array.from({length: 52}, (_, i) => i + 1)

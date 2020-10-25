@@ -17,8 +17,13 @@ const getFilteredDataObj = (dataPointList, location, ageGroup) => {
         }
 
         const yearData = dataObj[dataPoint.year];
-        if (dataPoint.week in yearData) {
-            throw new Error(`got 2 of the same year/week. week: ${dataPoint.week}, year: ${dataPoint.year}`);
+
+        if (location && ageGroup) {
+            // If we have both a location and an age group, we should never see a repeat year/week combo. Adding
+            // this as a safety check
+            if (dataPoint.week in yearData) {
+                throw new Error(`got 2 of the same year/week. week: ${dataPoint.week}, year: ${dataPoint.year}`);
+            }
         }
 
         let numDeaths = parseInt(dataPoint.number_of_deaths);
@@ -26,7 +31,11 @@ const getFilteredDataObj = (dataPointList, location, ageGroup) => {
             numDeaths = 0;
         }
 
-        yearData[dataPoint.week] = numDeaths;
+        if (dataPoint.week in yearData) {
+            yearData[dataPoint.week] += numDeaths;
+        } else {
+            yearData[dataPoint.week] = numDeaths;
+        }
     }
 
     return dataObj;
