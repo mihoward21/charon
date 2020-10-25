@@ -8,7 +8,7 @@ import DropdownButton from 'components/DropdownButton';
 import ChartTable from 'components/ChartTable';
 
 import { AGE_GROUPS, LOCATIONS, WEEKLY_DEATHS_BY_AGE_URL, WEEK_NUMS } from 'utils/constants';
-import { getFilteredDataObj, getFormattedDatasets } from 'utils/datasets';
+import { getFormattedDatasets } from 'utils/datasets';
 import { logEvent } from 'utils/logger';
 
 
@@ -32,15 +32,14 @@ class LineGraph extends React.Component {
         return `${this.location} weekly deaths for ${this.ageGroup}: 2015 - ${currentYear}`
     }
 
-    getChartDatasets() {
-        // Filter the data so only what we want to chart is left
-        const dataObj = getFilteredDataObj(this.dataPointList, this.location, this.ageGroup);
+    async getChartDatasets() {
+        let datasetUrl = `/api/data/${encodeURIComponent(this.location)}`
+        if (this.ageGroup) {
+            datasetUrl += `/${encodeURIComponent(this.ageGroup)}`
+        }
+        const response = await axios.get(datasetUrl);
+        const dataObj = response.data;
         return getFormattedDatasets(dataObj);
-    }
-
-    async initData() {
-        const response = await axios.get('/101220.data.json');
-        this.dataPointList = response.data;
     }
 
     initChart() {
@@ -88,8 +87,8 @@ class LineGraph extends React.Component {
         });
     }
 
-    updateChart() {
-        const chartDatasets = this.getChartDatasets();
+    async updateChart() {
+        const chartDatasets = await this.getChartDatasets();
 
         this.state.chartObj.data.datasets = chartDatasets;
         this.state.chartObj.options.title.text = this.getChartTitle();
@@ -101,26 +100,25 @@ class LineGraph extends React.Component {
 
     async componentDidMount() {
         this.initChart();
-        await this.initData();
         this.ageGroup = AGE_GROUPS[0];
         this.location = LOCATIONS[0];
-        this.updateChart();
+        await this.updateChart();
     }
 
-    onAgeGroupSelect(newAgeGroup) {
+    async onAgeGroupSelect(newAgeGroup) {
         logEvent('select: age group', {
             ageGroup: newAgeGroup
         });
         this.ageGroup = newAgeGroup;
-        this.updateChart();
+        await this.updateChart();
     }
 
-    onLocationSelect(newLocation) {
+    async onLocationSelect(newLocation) {
         logEvent('select: location', {
             location: newLocation
         });
         this.location = newLocation;
-        this.updateChart();
+        await this.updateChart();
     }
 
     render() {
