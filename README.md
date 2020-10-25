@@ -9,7 +9,10 @@ From the main directory, run `bash scripts.sh start_webapp`
 
 ## Deployment
 ### App
-From the main directory, run `bash scripts.sh build_and_deploy_code`
+From the main directory, run `bash scripts.sh build_and_deploy_web_code`
+
+### Server
+From the main directory, run `bash scripts.sh build_and_deploy_server_code`
 
 ### JSON file
 From the main directory, run `bash scripts.sh deply_json_file`
