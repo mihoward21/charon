@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import React from 'react';
 import Chart from "chart.js";
+import Loader from 'react-loader-spinner'
 
 import "components/LineGraph.css";
 import DropdownButton from 'components/DropdownButton';
@@ -26,6 +27,7 @@ class LineGraph extends React.Component {
         this.onLocationSelect = this.onLocationSelect.bind(this);
         this.state = {
             chartObj: null,
+            isLoading: false,
         }
     }
 
@@ -91,6 +93,9 @@ class LineGraph extends React.Component {
     }
 
     async updateChart() {
+        this.setState({
+            isLoading: true,
+        });
         const chartDatasets = await this.getChartDatasets();
 
         this.state.chartObj.data.datasets = chartDatasets;
@@ -98,7 +103,8 @@ class LineGraph extends React.Component {
         this.state.chartObj.update();
         this.setState({
             chartObj: this.state.chartObj,
-        })
+            isLoading: false,
+        });
     }
 
     async componentDidMount() {
@@ -143,6 +149,12 @@ class LineGraph extends React.Component {
                         onChange={this.onLocationSelect}
                         defaultValue={LOCATIONS[0]}
                         selectOptions={LOCATIONS} />
+                    <Loader className='controls-loading-spinner'
+                        type="Puff"
+                        color="#1E90FF"
+                        height={22}
+                        width={22}
+                        visible={this.state.isLoading} />
                 </div>
                 <div className='table-container'>
                     <ChartTable datasets={this.state.chartObj?.data?.datasets}/>
