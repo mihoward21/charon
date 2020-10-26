@@ -63,7 +63,7 @@ def fetch_data(dataset_url, limit=None):
     return result
 
 
-def get_filtered_data(data, location=None, state=None, age_group=None):
+def get_filtered_data(data, location=None, age_group=None):
     filtered_data = []
     for data_point in data:
         if data_point.get('type') != 'Unweighted':
