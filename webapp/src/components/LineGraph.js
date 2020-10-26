@@ -12,7 +12,7 @@ import { AGE_GROUPS, LOCATIONS, WEEKLY_DEATHS_BY_AGE_URL, WEEK_NUMS } from 'util
 import { getFormattedDatasets } from 'utils/datasets';
 import { logEvent } from 'utils/logger';
 
-const DATA_VERSION = '101220';
+const DATA_VERSION = '102520';
 
 
 class LineGraph extends React.Component {
