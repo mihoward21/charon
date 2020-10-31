@@ -103,6 +103,3 @@ export const LOCATIONS = locationList.map((location) => {
         'value': location,
     }
 });
-
-// Array of the form: [1, 2, ..., 51, 52]
-export const WEEK_NUMS = Array.from({length: 52}, (_, i) => i + 1)

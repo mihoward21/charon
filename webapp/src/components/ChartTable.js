@@ -3,17 +3,17 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 
-import { WEEK_NUMS } from 'utils/constants';
+import { getCurrentWeekNums } from 'utils/controls';
 
 
 class ChartTable extends React.Component {
-    getRowSum(row) {
-        return row.reduce((a, b) => {
-            if (b) {
-                return a + b;
+    getRowSum(rowData) {
+        return rowData.reduce((accum, currentValue) => {
+            if (currentValue) {
+                return accum + currentValue;
             }
 
-            return a;
+            return accum;
         }, 0)
     }
 
@@ -35,7 +35,7 @@ class ChartTable extends React.Component {
                 <TableHead>
                     <TableRow>
                         <TableCell><strong>Year</strong></TableCell>
-                        { WEEK_NUMS.map((weekNum, index) => {
+                        { getCurrentWeekNums().map((weekNum, index) => {
                             return <TableCell key={index}><strong>Week {weekNum}</strong></TableCell>
                         })}
                         <TableCell><strong>Sum</strong></TableCell>
@@ -46,8 +46,8 @@ class ChartTable extends React.Component {
                         return (
                             <StyledTableRow key={datasetIndex}>
                                 <TableCell>{dataset.label}</TableCell>
-                                { WEEK_NUMS.map((weekNum, dataIndex) => {
-                                    return <TableCell key={dataIndex}>{ this.getDataLabel(dataset.data[weekNum-1]) }</TableCell>
+                                { dataset.data.map((dataValue, dataIndex) => {
+                                    return <TableCell key={dataIndex}>{ this.getDataLabel(dataValue) }</TableCell>
                                 })}
                                 <TableCell>{ this.getRowSum(dataset.data) }</TableCell>
                             </StyledTableRow>

@@ -1,4 +1,5 @@
 import { COLORS } from 'utils/constants';
+import { getCurrentWeekNums } from 'utils/controls';
 
 
 export const getFormattedDatasets = (dataObj) => {
@@ -21,13 +22,8 @@ export const getFormattedDatasets = (dataObj) => {
         currentDataset['borderColor'] = COLORS[datasetIndex];
         currentDataset['fill'] = false;
 
-        for (let weekNum = 1; weekNum < 53; weekNum++) {
-            if (!(weekNum in yearData)) {
-                // Should be at the most recent week in the current year. No more data to process for this year
-                break;
-            }
-
-            const weekDeaths = yearData[weekNum];
+        for (const weekNum of getCurrentWeekNums()) {
+            const weekDeaths = yearData[weekNum] || null;
             currentDataset['data'].push(weekDeaths);
         }
 

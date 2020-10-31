@@ -7,9 +7,10 @@ import "components/LineGraph.css";
 import ChartTable from 'components/ChartTable';
 import ChartControls from 'components/ChartControls';
 
-import { AGE_GROUPS, LOCATIONS, WEEKLY_DEATHS_BY_AGE_URL, WEEK_NUMS } from 'utils/constants';
+import { AGE_GROUPS, LOCATIONS, WEEKLY_DEATHS_BY_AGE_URL } from 'utils/constants';
 import { getFormattedDatasets } from 'utils/datasets';
 import { logEvent } from 'utils/logger';
+import { getCurrentWeekNums } from 'utils/controls';
 
 const DATA_VERSION = '102520';
 
@@ -51,7 +52,7 @@ class LineGraph extends React.Component {
 
         const getWeekLabels = () => {
             const labels = [];
-            for (const weekNum of WEEK_NUMS) {
+            for (const weekNum of getCurrentWeekNums()) {
                 labels.push('Week ' + weekNum);
             }
             return labels;
