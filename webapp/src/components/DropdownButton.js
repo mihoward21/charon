@@ -31,7 +31,7 @@ class DropdownButton extends React.Component {
     render() {
         return (
             <div className={this.props.className}>
-                { this.props.labelText && <label style={{marginRight: '5px'}}>{this.props.labelText}</label> }
+                { this.props.labelText && <label>{this.props.labelText}: </label> }
                 <select
                     value={this.state.selectValue.value}
                     onChange={this.onChange}>
