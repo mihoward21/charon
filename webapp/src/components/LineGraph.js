@@ -2,11 +2,10 @@ import axios from 'axios';
 
 import React from 'react';
 import Chart from "chart.js";
-import Loader from 'react-loader-spinner'
 
 import "components/LineGraph.css";
-import DropdownButton from 'components/DropdownButton';
 import ChartTable from 'components/ChartTable';
+import ChartControls from 'components/ChartControls';
 
 import { AGE_GROUPS, LOCATIONS, WEEKLY_DEATHS_BY_AGE_URL, WEEK_NUMS } from 'utils/constants';
 import { getFormattedDatasets } from 'utils/datasets';
@@ -131,6 +130,21 @@ class LineGraph extends React.Component {
     }
 
     render() {
+        const controlOptions = [
+            {
+                'labelText': 'Age',
+                'onChange': this.onAgeGroupSelect,
+                'defaultValue': AGE_GROUPS[0],
+                'selectOptions': AGE_GROUPS,
+            },
+            {
+                'labelText': 'Region',
+                'onChange': this.onLocationSelect,
+                'defaultValue': LOCATIONS[0],
+                'selectOptions': LOCATIONS,
+            }
+        ]
+
         return (
             <>
                 <div className='chart-container'>
@@ -139,22 +153,9 @@ class LineGraph extends React.Component {
                         ref={this.chartRef} />
                 </div>
                 <div className='chart-controls'>
-                    <DropdownButton className='age-group-button'
-                        labelText='Age group:'
-                        onChange={this.onAgeGroupSelect}
-                        defaultValue={AGE_GROUPS[0]}
-                        selectOptions={AGE_GROUPS} />
-                    <DropdownButton className='location-button'
-                        labelText='Region:'
-                        onChange={this.onLocationSelect}
-                        defaultValue={LOCATIONS[0]}
-                        selectOptions={LOCATIONS} />
-                    <Loader className='controls-loading-spinner'
-                        type="Puff"
-                        color="#1E90FF"
-                        height={22}
-                        width={22}
-                        visible={this.state.isLoading} />
+                    <ChartControls
+                        controlOptions={controlOptions}
+                        isLoading={this.state.isLoading} />
                 </div>
                 <div className='table-container'>
                     <ChartTable datasets={this.state.chartObj?.data?.datasets}/>
