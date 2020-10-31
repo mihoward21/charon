@@ -1,6 +1,9 @@
+.chart-controls {
+    margin-top: 20px;
+}
+
 .control-button {
     display: inline-block;
-    margin-top: 20px;
     margin-left: 20px;
     color: #000000;
     font-size: 14px;
@@ -10,5 +13,5 @@
     position: absolute;
     display: inline-block;
     margin-left: 20px;
-    margin-top: 16px;
+    margin-top: 2px;
 }

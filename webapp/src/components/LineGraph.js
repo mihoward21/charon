@@ -152,11 +152,9 @@ class LineGraph extends React.Component {
                         id='myChart'
                         ref={this.chartRef} />
                 </div>
-                <div className='chart-controls'>
-                    <ChartControls
-                        controlOptions={controlOptions}
-                        isLoading={this.state.isLoading} />
-                </div>
+                <ChartControls
+                    controlOptions={controlOptions}
+                    isLoading={this.state.isLoading} />
                 <div className='table-container'>
                     <ChartTable datasets={this.state.chartObj?.data?.datasets}/>
                 </div>
