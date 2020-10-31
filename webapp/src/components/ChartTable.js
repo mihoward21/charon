@@ -7,6 +7,24 @@ import { WEEK_NUMS } from 'utils/constants';
 
 
 class ChartTable extends React.Component {
+    getRowSum(row) {
+        return row.reduce((a, b) => {
+            if (b) {
+                return a + b;
+            }
+
+            return a;
+        }, 0)
+    }
+
+    getDataLabel(dataValue) {
+        if (isNaN(dataValue)) {
+            return "";
+        }
+
+        return dataValue;
+    }
+
     render() {
         if (this.props.datasets === null || this.props.datasets === undefined) {
             return null;
@@ -20,6 +38,7 @@ class ChartTable extends React.Component {
                         { WEEK_NUMS.map((weekNum, index) => {
                             return <TableCell key={index}><strong>Week {weekNum}</strong></TableCell>
                         })}
+                        <TableCell><strong>Sum</strong></TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -27,9 +46,10 @@ class ChartTable extends React.Component {
                         return (
                             <StyledTableRow key={datasetIndex}>
                                 <TableCell>{dataset.label}</TableCell>
-                                { dataset.data.map((dataPoint, dataIndex) => {
-                                    return <TableCell key={dataIndex}>{ dataPoint }</TableCell>
+                                { WEEK_NUMS.map((weekNum, dataIndex) => {
+                                    return <TableCell key={dataIndex}>{ this.getDataLabel(dataset.data[weekNum-1]) }</TableCell>
                                 })}
+                                <TableCell>{ this.getRowSum(dataset.data) }</TableCell>
                             </StyledTableRow>
                         )
                     })}
