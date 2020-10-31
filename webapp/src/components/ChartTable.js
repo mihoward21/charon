@@ -38,7 +38,7 @@ class ChartTable extends React.Component {
                         { getCurrentWeekNums().map((weekNum, index) => {
                             return <TableCell key={index}><strong>Week {weekNum}</strong></TableCell>
                         })}
-                        <TableCell><strong>Sum</strong></TableCell>
+                        <TableCell><strong>Total</strong></TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
