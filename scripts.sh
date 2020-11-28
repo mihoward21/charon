@@ -37,6 +37,12 @@ function build_and_deploy_server_code {
     deploy_server_code
 }
 
+function download_json_file {
+    python data_fetch.py
+    rm -f server/data.json
+    mv data.json server/data.json
+}
+
 function deploy_json_file {
     aws s3 sync . s3://charonapp.com --delete --exclude "*" --include "*.data.json"
 }

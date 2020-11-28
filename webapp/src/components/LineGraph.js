@@ -12,7 +12,7 @@ import { getFormattedDatasets } from 'utils/datasets';
 import { logEvent } from 'utils/logger';
 import { getCurrentWeekNums } from 'utils/controls';
 
-const DATA_VERSION = '111020';
+const DATA_VERSION = '112720';
 
 
 class LineGraph extends React.Component {
