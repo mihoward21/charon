@@ -10,16 +10,17 @@ import ChartControls from 'components/ChartControls';
 import { AGE_GROUPS, LOCATIONS, WEEKLY_DEATHS_BY_AGE_URL } from 'utils/constants';
 import { getFormattedDatasets } from 'utils/datasets';
 import { logEvent } from 'utils/logger';
-import { getCurrentWeekNums } from 'utils/controls';
+import { getCurrentWeekNums, getOptionListEntryFromValue } from 'utils/controls';
 
 const DATA_VERSION = '112720';
+
+const URL_SEARCH_PARAM_AGE = 'age';
+const URL_SEARCH_PARAM_REGION = 'region';
 
 
 class LineGraph extends React.Component {
     chartRef = React.createRef();
     dataPointList = null;
-    ageGroup = AGE_GROUPS[0];
-    location = LOCATIONS[0];
 
     constructor(props) {
         super(props);
@@ -29,6 +30,10 @@ class LineGraph extends React.Component {
             chartObj: null,
             isLoading: false,
         }
+
+        const controlParams = this.getControlsFromSearchParams();
+        this.ageGroup = controlParams[URL_SEARCH_PARAM_AGE] || AGE_GROUPS[0];
+        this.location = controlParams[URL_SEARCH_PARAM_REGION] || LOCATIONS[0];
     }
 
     getChartTitle() {
@@ -107,11 +112,46 @@ class LineGraph extends React.Component {
         });
     }
 
+    getControlsFromSearchParams() {
+        const urlParams = new URLSearchParams(window.location.search);
+
+        const controlParams = {};
+        const age = urlParams.get(URL_SEARCH_PARAM_AGE);
+        const region = urlParams.get(URL_SEARCH_PARAM_REGION);
+        if (age) {
+            controlParams[URL_SEARCH_PARAM_AGE] = getOptionListEntryFromValue(decodeURIComponent(age), AGE_GROUPS);
+        }
+        if (region) {
+            controlParams[URL_SEARCH_PARAM_REGION] = getOptionListEntryFromValue(decodeURIComponent(region), LOCATIONS);
+        }
+
+        return controlParams;
+    }
+
     async componentDidMount() {
         this.initChart();
-        this.ageGroup = AGE_GROUPS[0];
-        this.location = LOCATIONS[0];
         await this.updateChart();
+    }
+
+    updateUrl() {
+        const url = new URL(window.location);
+
+        const isDefaultAge = this.ageGroup === AGE_GROUPS[0];
+        const isDefaultLocation = this.location === LOCATIONS[0];
+
+        if (isDefaultAge) {
+            url.searchParams.delete(URL_SEARCH_PARAM_AGE);
+        } else {
+            url.searchParams.set(URL_SEARCH_PARAM_AGE, encodeURIComponent(this.ageGroup.value));
+        }
+
+        if (isDefaultLocation) {
+            url.searchParams.delete(URL_SEARCH_PARAM_REGION);
+        } else {
+            url.searchParams.set(URL_SEARCH_PARAM_REGION, encodeURIComponent(this.location.value));
+        }
+
+        window.history.pushState({}, '', url);
     }
 
     async onAgeGroupSelect(newAgeGroup) {
@@ -119,6 +159,7 @@ class LineGraph extends React.Component {
             ageGroup: newAgeGroup.label
         });
         this.ageGroup = newAgeGroup;
+        this.updateUrl();
         await this.updateChart();
     }
 
@@ -127,6 +168,7 @@ class LineGraph extends React.Component {
             location: newLocation.label
         });
         this.location = newLocation;
+        this.updateUrl();
         await this.updateChart();
     }
 
@@ -135,13 +177,13 @@ class LineGraph extends React.Component {
             {
                 'labelText': 'Age',
                 'onChange': this.onAgeGroupSelect,
-                'defaultValue': AGE_GROUPS[0],
+                'defaultValue': this.ageGroup,
                 'selectOptions': AGE_GROUPS,
             },
             {
                 'labelText': 'Region',
                 'onChange': this.onLocationSelect,
-                'defaultValue': LOCATIONS[0],
+                'defaultValue': this.location,
                 'selectOptions': LOCATIONS,
             }
         ]

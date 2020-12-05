@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { getOptionListEntryFromValue } from 'utils/controls';
+
 
 class DropdownButton extends React.Component {
     constructor(props) {
@@ -11,13 +13,7 @@ class DropdownButton extends React.Component {
     }
 
     getOptionFromValue(optionValue) {
-        for (const selectOption of this.props.selectOptions) {
-            if (selectOption.value === optionValue) {
-                return selectOption;
-            }
-        }
-
-        return null;
+        return getOptionListEntryFromValue(optionValue, this.props.selectOptions);
     }
 
     onChange(e) {
