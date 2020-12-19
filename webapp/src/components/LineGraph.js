@@ -12,7 +12,7 @@ import { getFormattedDatasets } from 'utils/datasets';
 import { logEvent } from 'utils/logger';
 import { getCurrentWeekNums, getOptionListEntryFromValue } from 'utils/controls';
 
-const DATA_VERSION = '121020';
+const DATA_VERSION = '121820';
 
 const URL_SEARCH_PARAM_AGE = 'age';
 const URL_SEARCH_PARAM_REGION = 'region';
@@ -38,7 +38,7 @@ class LineGraph extends React.Component {
 
     getChartTitle() {
         const currentYear = new Date().getFullYear();
-        return `${this.location.label} weekly deaths for ${this.ageGroup.label}: 2015 - ${currentYear}`
+        return `${this.location.label} weekly deaths for ${this.ageGroup.label.toLowerCase()}: 2015 - ${currentYear}`
     }
 
     async getChartDatasets() {
