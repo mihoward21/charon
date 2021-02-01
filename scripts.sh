@@ -1,13 +1,13 @@
 #!/bin/bash
 
 function build_production_web_code {
-    cd webapp
+    cd webapp || exit
     npm run build
     cd ..
 }
 
 function deploy_built_web_code {
-    cd webapp/build/
+    cd webapp/build/ || exit
     aws s3 cp index.html s3://charonapp.com/index.html --cache-control no-store
     aws s3 sync . s3://charonapp.com --delete --exclude "*.data.json" --exclude "index.html"
     cd ../..
@@ -19,8 +19,8 @@ function build_and_deploy_web_code {
 }
 
 function build_server_code {
-    cd server
-    rm build/*
+    cd server || exit
+    rm -rf ./build/*
     cp data.json build
     cp -a src/. build/
     cp -a node_modules/ build/
@@ -28,7 +28,7 @@ function build_server_code {
 }
 
 function deploy_server_code {
-    cd server/build/
+    cd server/build/ || exit
     zip -r build.zip .
     aws lambda update-function-code --function-name server --zip-file fileb://build.zip
     cd ../..
