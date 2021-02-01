@@ -3,7 +3,7 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 
-import { getCurrentWeekNums } from 'utils/controls';
+import { getCurrentWeekNums } from '../utils/controls';
 
 
 class ChartTable extends React.Component {

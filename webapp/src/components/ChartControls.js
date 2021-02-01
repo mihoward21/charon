@@ -1,9 +1,9 @@
 import React from 'react';
 import Loader from 'react-loader-spinner';
 
-import "components/ChartControls.css";
+import "./ChartControls.css";
 
-import DropdownButton from 'components/DropdownButton';
+import DropdownButton from './DropdownButton';
 
 
 class ChartControls extends React.Component {

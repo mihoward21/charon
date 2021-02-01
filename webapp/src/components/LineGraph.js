@@ -3,14 +3,14 @@ import axios from 'axios';
 import React from 'react';
 import Chart from "chart.js";
 
-import "components/LineGraph.css";
-import ChartTable from 'components/ChartTable';
-import ChartControls from 'components/ChartControls';
+import "./LineGraph.css";
+import ChartTable from './ChartTable';
+import ChartControls from './ChartControls';
 
-import { AGE_GROUPS, LOCATIONS, WEEKLY_DEATHS_BY_AGE_URL } from 'utils/constants';
-import { getFormattedDatasets } from 'utils/datasets';
-import { logEvent } from 'utils/logger';
-import { getCurrentWeekNums, getOptionListEntryFromValue } from 'utils/controls';
+import { AGE_GROUPS, LOCATIONS, WEEKLY_DEATHS_BY_AGE_URL } from '../utils/constants';
+import { getFormattedDatasets } from '../utils/datasets';
+import { logEvent } from '../utils/logger';
+import { getCurrentWeekNums, getOptionListEntryFromValue } from '../utils/controls';
 
 const DATA_VERSION = '012221';
 

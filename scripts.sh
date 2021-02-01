@@ -1,3 +1,5 @@
+#!/bin/bash
+
 function build_production_web_code {
     cd webapp
     npm run build
@@ -38,7 +40,7 @@ function build_and_deploy_server_code {
 }
 
 function download_json_file {
-    python data_fetch.py
+    python3 data_fetch.py
     rm -f server/data.json
     mv data.json server/data.json
 }

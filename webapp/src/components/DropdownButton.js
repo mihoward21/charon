@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { getOptionListEntryFromValue } from 'utils/controls';
+import { getOptionListEntryFromValue } from '../utils/controls';
 
 
 class DropdownButton extends React.Component {

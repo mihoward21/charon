@@ -1,8 +1,8 @@
 import React from 'react';
-import 'components/App.css';
+import './App.css';
 
-import LineGraph from 'components/LineGraph';
-import { logEvent } from 'utils/logger';
+import LineGraph from './LineGraph';
+import { logEvent } from '../utils/logger';
 
 const amplitude = require('amplitude-js');
 

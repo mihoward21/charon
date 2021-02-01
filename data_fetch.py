@@ -49,7 +49,7 @@ def fetch_data(dataset_url, limit=None):
     while True:
         request_url = dataset_url + '?'
         if url_params and len(url_params) > 0:
-            request_url += urllib.urlencode(url_params)
+            request_url += urllib.parse.urlencode(url_params)
 
         print("fetching data. url: %s, params: %s" % (dataset_url, url_params))
         response = requests.get(request_url, headers=REQUEST_DATA_HEADERS)

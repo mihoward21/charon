@@ -1,5 +1,5 @@
-import { COLORS } from 'utils/constants';
-import { getCurrentWeekNums } from 'utils/controls';
+import { COLORS } from './constants';
+import { getCurrentWeekNums } from './controls';
 
 
 export const getFormattedDatasets = (dataObj) => {
