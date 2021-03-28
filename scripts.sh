@@ -8,8 +8,8 @@ function build_production_web_code {
 
 function deploy_built_web_code {
     cd webapp/build/ || exit
-    aws s3 cp index.html s3://charonapp.com/index.html --cache-control no-store
-    aws s3 sync . s3://charonapp.com --delete --exclude "*.data.json" --exclude "index.html"
+    aws s3 cp index.html s3://charonapp.com/index.html --cache-control no-store --profile personal
+    aws s3 sync . s3://charonapp.com --delete --exclude "*.data.json" --exclude "index.html" --profile personal
     cd ../..
 }
 
@@ -30,7 +30,7 @@ function build_server_code {
 function deploy_server_code {
     cd server/build/ || exit
     zip -r build.zip .
-    aws lambda update-function-code --function-name server --zip-file fileb://build.zip
+    aws lambda update-function-code --function-name server --zip-file fileb://build.zip --profile personal
     cd ../..
 }
 
