@@ -15,4 +15,4 @@ From the main directory, run `bash scripts.sh build_and_deploy_web_code`
 From the main directory, run `bash scripts.sh build_and_deploy_server_code`
 
 ### JSON file
-From the main directory, run `bash scripts.sh deply_json_file`
+From the main directory, run `bash scripts.sh download_json_file`

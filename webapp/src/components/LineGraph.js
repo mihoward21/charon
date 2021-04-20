@@ -12,7 +12,7 @@ import { getFormattedDatasets } from '../utils/datasets';
 import { logEvent } from '../utils/logger';
 import { getCurrentWeekNums, getOptionListEntryFromValue } from '../utils/controls';
 
-const DATA_VERSION = '032621';
+const DATA_VERSION = '041921';
 
 const URL_SEARCH_PARAM_AGE = 'age';
 const URL_SEARCH_PARAM_REGION = 'region';
